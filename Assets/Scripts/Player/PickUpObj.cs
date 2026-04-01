@@ -49,15 +49,14 @@ public class PickUpObj : MonoBehaviour
             heldObj.transform.position = holdPosition.position;
             obj.transform.SetParent(holdPosition); // Parent the object to the hold position
             heldObj.layer = LayerMask.NameToLayer("Interactable"); // Change the layer to "Interactable" to prevent raycast detection
-            Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), true);
-            
+            // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), true); 
         }
     }
 
     void DropObject()
     {
         //re-enable collision with player
-        Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), false);
+        // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(),Player.GetComponent<Collider>(), false);
         // heldObj.layer = 0; //object assigned back to default layer
         heldObjRb.isKinematic = false;
         heldObj.transform.parent = null; //unparent object
