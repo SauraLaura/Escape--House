@@ -37,7 +37,19 @@ public class PickUpObj : MonoBehaviour
             // Debug.Log("Hit an Interactable object: " + hit.collider.name);
             // Debug.Log("The held object : ", heldObj);
             PickUpObject(hit.transform.gameObject);
-        }      
+        }
+        else if (Physics.Raycast(ray, out RaycastHit hit2, rayDistance, LayerMask.GetMask("Door")))
+        {
+            UnityEngine.Debug.Log("Hit a door: " + hit2.collider.name);
+            if (!GameObject.Find("Door").GetComponent<DoorInteraction>().doorOpened)
+            {
+                GameObject.Find("Door").GetComponent<DoorInteraction>().OpenDoor();
+            }
+            else
+            {
+                GameObject.Find("Door").GetComponent<DoorInteraction>().CloseDoor();
+            }
+        }
     }
 
     void PickUpObject(GameObject obj)

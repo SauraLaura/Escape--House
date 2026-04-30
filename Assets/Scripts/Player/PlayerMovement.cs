@@ -111,7 +111,7 @@ public class PlayerMovement : MonoBehaviour
                 controller.Move(move * walkSpeed * 2 * Time.deltaTime);
                 break;
             case MovementState.Idle:
-                sprintDuration += 1.5f * Time.deltaTime;
+                sprintDuration += 2f * Time.deltaTime;
                 break;
         }
     }
