@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using UnityEngine;
 
 public class PickUpObj : MonoBehaviour
@@ -7,8 +8,6 @@ public class PickUpObj : MonoBehaviour
     [SerializeField] Transform holdPosition;
     [SerializeField] GameObject heldObj;
     [SerializeField] Rigidbody heldObjRb;
-    [SerializeField] float throwForce = 500f;
-    // Update is called once per frame
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -20,6 +19,7 @@ public class PickUpObj : MonoBehaviour
                     if(Input.GetKeyDown(KeyCode.E))
                     {
                         DropObject();
+                        // Debug.Log("The dropped object : ", heldObj);
                     }
                 }
                 else if (heldObj == null && Input.GetKeyDown(KeyCode.E))
@@ -34,7 +34,8 @@ public class PickUpObj : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, LayerMask.GetMask("Interactable")))
         {
-            Debug.Log("Hit an Interactable object: " + hit.collider.name);
+            // Debug.Log("Hit an Interactable object: " + hit.collider.name);
+            // Debug.Log("The held object : ", heldObj);
             PickUpObject(hit.transform.gameObject);
         }      
     }
@@ -90,5 +91,4 @@ public class PickUpObj : MonoBehaviour
         Gizmos.color = Color.red;
         Gizmos.DrawRay(transform.position, transform.forward * rayDistance);
     }
-
 }
