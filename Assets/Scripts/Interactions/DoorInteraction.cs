@@ -21,5 +21,6 @@ public class DoorInteraction : MonoBehaviour
         DoorAnim.SetBool("OpenDoor", false);
         doorOpened = false;
     }
+    
 }
 

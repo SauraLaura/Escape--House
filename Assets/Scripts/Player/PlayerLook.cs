@@ -4,8 +4,7 @@ public class PlayerLook : MonoBehaviour
 {
     [SerializeField] float mouseSens = 150f;
     [SerializeField] Transform playerBody;
-    float xRotation = 0f;
-
+    [SerializeField] float xRotation = 0f;
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked; // Lock the cursor to the center of the screen
