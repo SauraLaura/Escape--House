@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
 
 public class PickUpObj : MonoBehaviour
@@ -10,26 +11,41 @@ public class PickUpObj : MonoBehaviour
     [SerializeField] GameObject heldObj;
     [SerializeField] Rigidbody heldObjRb;
 
+    InputSystem_Actions inputActions;
+    InputAction interactAction;
     Ray ray;
+
+    void OnEnable()
+    {
+        inputActions = new InputSystem_Actions();
+        inputActions.Enable();
+        interactAction = inputActions.Player.Interact;
+    }
+
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (interactAction == null)
+            return;
+
+        if (interactAction.WasPressedThisFrame())
         {
-                if (heldObj != null)
-                {
-                    MoveObject();
-                    StopClipping();
-                    if(Input.GetKeyDown(KeyCode.E))
-                    {
-                        DropObject();
-                        // Debug.Log("The dropped object : ", heldObj);
-                    }
-                }
-                else
-                {
-                    RayDetection();
-                }
-                DoorInteractionFunc();
+            if (heldObj != null)
+            {
+                MoveObject();
+                StopClipping();
+                DropObject();
+            }
+            else
+            {
+                RayDetection();
+            }
+
+            DoorInteractionFunc();
         }
     }
 

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -10,6 +11,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float sprintDuration = 5f;
     [SerializeField] float maxSprintDuration = 5f;
     CharacterController controller;
+
+    InputSystem_Actions inputActions;
+    InputAction moveAction;
+    InputAction sprintAction;
 
     enum MovementState
     {
@@ -51,10 +56,18 @@ public class PlayerMovement : MonoBehaviour
         controller = GetComponent<CharacterController>();
     }
 
+    void OnEnable()
+    {
+        inputActions = new InputSystem_Actions();
+        inputActions.Enable();
+        moveAction = inputActions.Player.Move;
+        sprintAction = inputActions.Player.Sprint;
+    }
     void Update()
     {
-        float inputX = Input.GetAxis("Horizontal");
-        float inputZ = Input.GetAxis("Vertical");
+        Vector2 inputVector = moveAction.ReadValue<Vector2>();
+        float inputX = inputVector.x;
+        float inputZ = inputVector.y;
 
         //Movement 
         move = transform.right * inputX + transform.forward * inputZ; //Get the direction based on input
@@ -74,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
         sprintDuration = Mathf.Clamp(sprintDuration, 0, maxSprintDuration);
         if (move.magnitude > 0.1f)
         {
-            if (Input.GetKey(KeyCode.LeftShift))
+            if (sprintAction.IsPressed())
             {
                 sprintDuration -= Time.deltaTime;
                 if (sprintDuration > 0f)
@@ -139,6 +152,11 @@ public class PlayerMovement : MonoBehaviour
         return Physics.CheckSphere(groundCheck.position, groundDistance, groundLayer);
     }
     #endregion Gravity Logic
+
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
 
     void OnDrawGizmos()
     {
