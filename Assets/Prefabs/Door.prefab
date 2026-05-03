@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2086800544307661149
+--- !u!1 &1110981507111631321
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,9 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6530707660234241801}
-  - component: {fileID: 4474384517604361660}
-  - component: {fileID: 7477697416664509088}
+  - component: {fileID: 2289840353955463803}
+  - component: {fileID: 2419275417316769718}
   m_Layer: 7
   m_Name: Door
   m_TagString: Untagged
@@ -18,59 +17,39 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6530707660234241801
+--- !u!4 &2289840353955463803
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2086800544307661149}
+  m_GameObject: {fileID: 1110981507111631321}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.00000016391276, z: -0, w: 1}
-  m_LocalPosition: {x: -8.0547, y: 6.73, z: 25.83246}
-  m_LocalScale: {x: 0.5525, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.032, y: 7.018, z: 17.212}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 918860536849168408}
+  - {fileID: 602217615849480841}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &4474384517604361660
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2086800544307661149}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5cf635a4deb80364d874b293ad494446, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7477697416664509088
+--- !u!114 &2419275417316769718
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2086800544307661149}
+  m_GameObject: {fileID: 1110981507111631321}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 665f5b7f422b2c14985ae8cdb3b89451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DoorInteraction
-  DoorAnim: {fileID: 0}
   doorOpened: 0
---- !u!1 &7920536289447780590
+  rotAngle: 90
+  ReverseRot: 0
+  rotSpeed: 3
+--- !u!1 &3552419268195675080
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -78,10 +57,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 918860536849168408}
-  - component: {fileID: 1114376783744625047}
-  - component: {fileID: 6544583334705098916}
-  - component: {fileID: 8302323060337762293}
+  - component: {fileID: 602217615849480841}
+  - component: {fileID: 5403408562487669193}
+  - component: {fileID: 6008838498820176520}
+  - component: {fileID: 7392025252415452463}
   m_Layer: 7
   m_Name: DoorGraphic
   m_TagString: Untagged
@@ -89,36 +68,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &918860536849168408
+--- !u!4 &602217615849480841
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920536289447780590}
+  m_GameObject: {fileID: 3552419268195675080}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.00000016391276, z: -0, w: 1}
-  m_LocalPosition: {x: 0.032000247, y: 0.09700012, z: -0.8944607}
-  m_LocalScale: {x: 0.3, y: 3.4174898, z: 2.0774}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.116999865, y: -0.237, z: -0.9920006}
+  m_LocalScale: {x: 0.33194, y: 3.4275076, z: 2.0130517}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 6530707660234241801}
+  m_Father: {fileID: 2289840353955463803}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1114376783744625047
+--- !u!33 &5403408562487669193
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920536289447780590}
+  m_GameObject: {fileID: 3552419268195675080}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &6544583334705098916
+--- !u!23 &6008838498820176520
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920536289447780590}
+  m_GameObject: {fileID: 3552419268195675080}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -161,13 +140,13 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &8302323060337762293
+--- !u!65 &7392025252415452463
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7920536289447780590}
+  m_GameObject: {fileID: 3552419268195675080}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -180,5 +159,5 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.99999994, y: 1, z: 0.99999994}
+  m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}

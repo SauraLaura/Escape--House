@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerLook : MonoBehaviour
 {
-    [SerializeField] float mouseSens = 150f;
+    [SerializeField] public float mouseSens = 150f;
     [SerializeField] Transform playerBody;
     [SerializeField] float xRotation = 0f;
     void Start()

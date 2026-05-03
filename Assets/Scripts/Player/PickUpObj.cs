@@ -1,5 +1,6 @@
 using System.Diagnostics;
 using UnityEngine;
+using UnityEngine.ProBuilder.Shapes;
 
 public class PickUpObj : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class PickUpObj : MonoBehaviour
     [SerializeField] Transform holdPosition;
     [SerializeField] GameObject heldObj;
     [SerializeField] Rigidbody heldObjRb;
+
+    Ray ray;
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.E))
@@ -22,32 +25,35 @@ public class PickUpObj : MonoBehaviour
                         // Debug.Log("The dropped object : ", heldObj);
                     }
                 }
-                else if (heldObj == null && Input.GetKeyDown(KeyCode.E))
+                else
                 {
                     RayDetection();
                 }
+                DoorInteractionFunc();
         }
     }
 
     void RayDetection()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit, rayDistance, LayerMask.GetMask("Interactable")))
         {
             // Debug.Log("Hit an Interactable object: " + hit.collider.name);
             // Debug.Log("The held object : ", heldObj);
             PickUpObject(hit.transform.gameObject);
         }
-        else if (Physics.Raycast(ray, out RaycastHit hit2, rayDistance, LayerMask.GetMask("Door")))
+    }
+
+    void DoorInteractionFunc()
+    {
+        ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit2, rayDistance, LayerMask.GetMask("Door")))
         {
             UnityEngine.Debug.Log("Hit a door: " + hit2.collider.name);
-            if (!GameObject.Find("Door").GetComponent<DoorInteraction>().doorOpened)
+            DoorInteraction hitDoor = hit2.collider.GetComponentInParent<DoorInteraction>();
+            if (hitDoor != null)
             {
-                GameObject.Find("Door").GetComponent<DoorInteraction>().OpenDoor();
-            }
-            else
-            {
-                GameObject.Find("Door").GetComponent<DoorInteraction>().CloseDoor();
+                hitDoor.ToggleDoor();
             }
         }
     }
