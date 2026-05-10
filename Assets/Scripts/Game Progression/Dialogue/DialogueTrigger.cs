@@ -4,7 +4,7 @@ using UnityEngine;
 public class DialogueTrigger : MonoBehaviour 
 {
     public DialogueData dialogueToPlay;   
-    public string newObjectiveText;       
+    // public string newObjectiveText;       
     public bool hasPlayed = false;       
 
     [Header("Sequence Settings")]
@@ -21,12 +21,12 @@ public class DialogueTrigger : MonoBehaviour
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player") && hasPlayed)
-        {
-            FindFirstObjectByType<ObjectiveUI>().UpdateObjective(newObjectiveText);   
-            // Debug.Log("I am step " + requiredStep + ". The game is currently on step " + GameProgress.currentStoryStep);
-        }
-    }
+    // void OnTriggerExit(Collider other)
+    // {
+    //     if (other.CompareTag("Player") && hasPlayed)
+    //     {
+    //         FindFirstObjectByType<ObjectiveUI>().UpdateObjective(newObjectiveText);   
+    //         // Debug.Log("I am step " + requiredStep + ". The game is currently on step " + GameProgress.currentStoryStep);
+    //     }
+    // }
 }

@@ -2,10 +2,27 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using System.Collections;
+using UnityEngine.InputSystem;
 
 public class DialogueManager : MonoBehaviour
 {   
     #region NewDialogueSystem
+
+    InputSystem_Actions inputActions;
+    InputAction interactAction;
+
+    void OnEnable()
+    {
+        inputActions = new InputSystem_Actions();
+        inputActions.Enable();
+        interactAction = inputActions.Player.Interact;
+    }
+
+    void OnDisable()
+    {
+        inputActions.Disable();
+    }
+
     public static DialogueManager instance;
     private void Awake()
     {
@@ -22,7 +39,7 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI textDisplay;
     private DialogueData currentDialogue;
     [SerializeField] int index = 0;
-    [SerializeField] Animator animator;
+    // [SerializeField] Animator animator;
     [SerializeField] public bool dialogueActive;
     [SerializeField] GameObject dialogueUI;
 
@@ -30,7 +47,7 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if(dialogueActive && Input.GetKeyDown(KeyCode.E)) 
+        if(dialogueActive && interactAction.WasPressedThisFrame())
         {
             DisplayNextLine();
         }
@@ -68,7 +85,7 @@ public class DialogueManager : MonoBehaviour
             index = 0;
             dialogueActive = false;
             dialogueUI.SetActive(false);
-            animator.SetBool("Dissappear", false);
+            // animator.SetBool("Dissappear", false);
         }
     }
     #endregion NewDialogueSystem

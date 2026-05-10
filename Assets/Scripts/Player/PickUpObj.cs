@@ -14,6 +14,7 @@ public class PickUpObj : MonoBehaviour
     InputSystem_Actions inputActions;
     InputAction interactAction;
     Ray ray;
+    Vector3 originalLocalScale; // Store original scale when picking up
 
     void OnEnable()
     {
@@ -72,7 +73,7 @@ public class PickUpObj : MonoBehaviour
                 hitDoor.ToggleDoor();
             }
         }
-    }
+    } 
 
     void PickUpObject(GameObject obj)
     {
@@ -80,10 +81,14 @@ public class PickUpObj : MonoBehaviour
         {
             heldObj = obj; // Store the reference to the held object
             heldObjRb = obj.GetComponent<Rigidbody>();
+            originalLocalScale = obj.transform.localScale; // Store original scale before parenting
             heldObjRb.isKinematic = true; // Make the object kinematic to disable physics interactions
             heldObj.transform.position = holdPosition.position;
             obj.transform.SetParent(holdPosition); // Parent the object to the hold position
             heldObj.layer = LayerMask.NameToLayer("Interactable"); // Change the layer to "Interactable" to prevent raycast detection
+            heldObj.transform.localRotation = new Quaternion(0f, 0f, 0f, 1f); //reset object rotation to prevent weird angles when picking up
+            //heldObj.transform.localScale = new Vector3(heldObj.transform.localScale.x, heldObj.transform.localScale.y, heldObj.transform.localScale.z); //reset object scale to prevent weird scaling when picking up
+            //heldObj.transform.localPosition = new Vector3(0f, 0f, 0f); //reset object position to holdPos position to prevent weird offsets when picking up
             // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), true); 
         }
     }
@@ -93,8 +98,10 @@ public class PickUpObj : MonoBehaviour
         //re-enable collision with player
         // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(),Player.GetComponent<Collider>(), false);
         // heldObj.layer = 0; //object assigned back to default layer
+        heldObj.transform.parent = null; //unparent object first
+        heldObj.transform.localScale = originalLocalScale; // Restore original scale after unparenting
         heldObjRb.isKinematic = false;
-        heldObj.transform.parent = null; //unparent object
+        heldObjRb.AddForce(new Vector3(0f, 0f, -2f), ForceMode.Impulse); // Add an upward force to the object when picked up
         heldObj = null; //undefine game object
         heldObjRb = null; //undefine rigidbody
     }

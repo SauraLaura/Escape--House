@@ -8,8 +8,8 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("MOVEMENT")]
     [SerializeField] float walkSpeed = 5f;
-    [SerializeField] float sprintDuration = 5f;
-    [SerializeField] float maxSprintDuration = 5f;
+    [SerializeField] float sprintDuration = 3f;
+    [SerializeField] float maxSprintDuration = 3f;
     CharacterController controller;
 
     InputSystem_Actions inputActions;
@@ -20,7 +20,8 @@ public class PlayerMovement : MonoBehaviour
     {
         Walking,
         Running,
-        Idle
+        Idle,
+        Stopped
     }
 
     [SerializeField] MovementState currentState;
@@ -103,6 +104,10 @@ public class PlayerMovement : MonoBehaviour
             {
                 currentState = MovementState.Walking;
             }
+            if(DialogueManager.instance != null && DialogueManager.instance.dialogueActive)
+            {
+                currentState = MovementState.Stopped;
+            }
         }
         else
         {
@@ -125,6 +130,9 @@ public class PlayerMovement : MonoBehaviour
                 break;
             case MovementState.Idle:
                 sprintDuration += 2f * Time.deltaTime;
+                break;
+            case MovementState.Stopped:
+                controller.Move(Vector3.zero);
                 break;
         }
     }
