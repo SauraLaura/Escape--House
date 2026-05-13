@@ -52,6 +52,7 @@ public class PickUpObj : MonoBehaviour
         else if(interactAction.WasPressedThisFrame())
         {
             DoorInteractionFunc();
+            ButtonInteractionFunc();
         }
     }
 
@@ -93,6 +94,20 @@ public class PickUpObj : MonoBehaviour
     //         }
     //     }
     // }
+
+    void ButtonInteractionFunc()
+    {
+        ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit4, rayDistance, LayerMask.GetMask("Button")))
+        {
+            // UnityEngine.Debug.Log("Hit a button: " + hit4.collider.name);
+            ButtonInteraction hitButton = hit4.collider.GetComponentInParent<ButtonInteraction>();
+            if (hitButton != null)
+            {
+                hitButton.PressButton();
+            }
+        }
+    }
 
     void PickUpObject(GameObject obj)
     {
