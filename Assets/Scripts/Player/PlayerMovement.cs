@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using Unity.Cinemachine;
+using System;
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovement : MonoBehaviour
@@ -15,6 +17,11 @@ public class PlayerMovement : MonoBehaviour
     InputSystem_Actions inputActions;
     InputAction moveAction;
     InputAction sprintAction;
+
+    [SerializeField]CinemachineBasicMultiChannelPerlin cameraShake;
+    [SerializeField] float ShakeGain = .5f;
+    [SerializeField] float ShakeSpeed = 1f;
+
 
     enum MovementState
     {
@@ -124,9 +131,13 @@ public class PlayerMovement : MonoBehaviour
             case MovementState.Walking:
                 controller.Move(move * walkSpeed * Time.deltaTime);
                 sprintDuration += 1.0f * Time.deltaTime;
+                cameraShake.AmplitudeGain = 1f;
+                cameraShake.FrequencyGain = 1.5f;
                 break;
             case MovementState.Running:
                 controller.Move(move * walkSpeed * 2 * Time.deltaTime);
+                cameraShake.AmplitudeGain = ShakeGain;
+                cameraShake.FrequencyGain = ShakeSpeed;
                 break;
             case MovementState.Idle:
                 sprintDuration += 2f * Time.deltaTime;
