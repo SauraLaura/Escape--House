@@ -8,6 +8,9 @@ public class DoorInteraction : MonoBehaviour
     [SerializeField] int rotAngle;
     [SerializeField] bool ReverseRot;
     [SerializeField] float rotSpeed = 3f;
+    public bool isLockedByPlanks;
+    [SerializeField] GameObject Planks; // Reference to the planks GameObject
+    [SerializeField] DialogueData lockedDoorDialogue; // Dialog shown when trying to open without a crowbar
 
     Quaternion targetRotation;
     Quaternion closedRotation;
@@ -17,6 +20,7 @@ public class DoorInteraction : MonoBehaviour
     {
         closedRotation = transform.rotation;
         targetRotation = closedRotation;
+        // Planks = transform.GetChild(1).gameObject; // Assuming the planks are a child of the door
     }
 
     void Update()
@@ -30,6 +34,7 @@ public class DoorInteraction : MonoBehaviour
     public void ToggleDoor()
     {
         doorOpened = !doorOpened;
+        DoorLockCheck();
         SetTargetRotation();
         isRotating = true;
     }
@@ -54,6 +59,28 @@ public class DoorInteraction : MonoBehaviour
         {
             transform.rotation = targetRotation;
             isRotating = false;
+        }
+    }
+
+    void DoorLockCheck()
+    {
+        PickUpObj playerPickup = FindAnyObjectByType<PickUpObj>();
+        bool hasCrowbar = playerPickup != null && playerPickup.isHoldingCrowbar;
+
+        if (isLockedByPlanks)
+        {
+            if (hasCrowbar)
+            {
+                Destroy(Planks);
+                isLockedByPlanks = false;
+                UnityEngine.Debug.Log("Door is locked by planks. Remove them to open the door.");
+            }
+            else
+            {
+                DialogueManager.instance.StartDialogue(lockedDoorDialogue, null);
+            }
+                // UnityEngine.Debug.Log("Door is locked by planks. You need a crowbar to remove them.");
+                doorOpened = false; // Prevent the door from opening
         }
     }
 }

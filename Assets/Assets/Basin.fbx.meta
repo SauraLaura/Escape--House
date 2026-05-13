@@ -3,7 +3,27 @@ guid: f7b3a37a0d912544b8942572ef337479
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: basin_lambert70_BaseColor.1001
+    second: {fileID: 2800000, guid: 8b612cf3ef0e84745add02e6c69f51ca, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: basin_lambert70_Metallic.1001
+    second: {fileID: 2800000, guid: e195e36ade91377499179952fec46ceb, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: basin_lambert70_Normal.1001
+    second: {fileID: 2800000, guid: bd75afc7376eeb041940ffa5b83477ae, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: basin_lambert70_Roughness.1001
+    second: {fileID: 2800000, guid: 74666b76f21633b49a41c505a9565558, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0

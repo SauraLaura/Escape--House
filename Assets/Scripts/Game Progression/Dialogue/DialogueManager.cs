@@ -9,13 +9,13 @@ public class DialogueManager : MonoBehaviour
     #region NewDialogueSystem
 
     InputSystem_Actions inputActions;
-    InputAction interactAction;
+    InputAction DialogueInteractAction;
 
     void OnEnable()
     {
         inputActions = new InputSystem_Actions();
         inputActions.Enable();
-        interactAction = inputActions.Player.Interact;
+        DialogueInteractAction = inputActions.Player.DialogueInput;
     }
 
     void OnDisable()
@@ -39,6 +39,9 @@ public class DialogueManager : MonoBehaviour
     public TextMeshProUGUI textDisplay;
     private DialogueData currentDialogue;
     [SerializeField] int index = 0;
+    [SerializeField] float typingSpeed = 0.03f;
+    bool isTyping = false;
+    Coroutine typingCoroutine;
     // [SerializeField] Animator animator;
     [SerializeField] public bool dialogueActive;
     [SerializeField] GameObject dialogueUI;
@@ -47,9 +50,16 @@ public class DialogueManager : MonoBehaviour
 
     void Update()
     {
-        if(dialogueActive && interactAction.WasPressedThisFrame())
+        if(dialogueActive && DialogueInteractAction.WasPressedThisFrame())
         {
-            DisplayNextLine();
+            if (isTyping)
+            {
+                CompleteCurrentLine();
+            }
+            else
+            {
+                DisplayNextLine();
+            }
         }
     }
 
@@ -69,9 +79,14 @@ public class DialogueManager : MonoBehaviour
         if (index < currentDialogue.lines.Length) 
         {
             nameDisplay.text = currentDialogue.lines[index].characterName;
-            textDisplay.text = currentDialogue.lines[index].text;
+            textDisplay.text = string.Empty;
             nameDisplay.color = currentDialogue.lines[index].nameColor;
 
+            if (typingCoroutine != null)
+            {
+                StopCoroutine(typingCoroutine);
+            }
+            typingCoroutine = StartCoroutine(TypeSentence(currentDialogue.lines[index].text));
             index++;
         } 
         else 
@@ -87,6 +102,35 @@ public class DialogueManager : MonoBehaviour
             dialogueUI.SetActive(false);
             // animator.SetBool("Dissappear", false);
         }
+    }
+
+    IEnumerator TypeSentence(string sentence)
+    {
+        isTyping = true;
+        textDisplay.text = string.Empty;
+
+        foreach (char letter in sentence.ToCharArray())
+        {
+            textDisplay.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
+        }
+
+        isTyping = false;
+        typingCoroutine = null;
+    }
+
+    void CompleteCurrentLine()
+    {
+        if (typingCoroutine != null)
+        {
+            StopCoroutine(typingCoroutine);
+            typingCoroutine = null;
+        }
+        if (currentDialogue != null && index > 0 && index - 1 < currentDialogue.lines.Length)
+        {
+            textDisplay.text = currentDialogue.lines[index - 1].text;
+        }
+        isTyping = false;
     }
     #endregion NewDialogueSystem
 }

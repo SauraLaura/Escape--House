@@ -13,14 +13,17 @@ public class PickUpObj : MonoBehaviour
 
     InputSystem_Actions inputActions;
     InputAction interactAction;
+    InputAction ObjPickUpNDrop;
     Ray ray;
     Vector3 originalLocalScale; // Store original scale when picking up
+    public bool isHoldingCrowbar = false;
 
     void OnEnable()
     {
         inputActions = new InputSystem_Actions();
         inputActions.Enable();
         interactAction = inputActions.Player.Interact;
+        ObjPickUpNDrop = inputActions.Player.ObjPickDrop;
     }
 
     void OnDisable()
@@ -30,10 +33,10 @@ public class PickUpObj : MonoBehaviour
 
     void Update()
     {
-        if (interactAction == null)
+        if (ObjPickUpNDrop == null)
             return;
 
-        if (interactAction.WasPressedThisFrame())
+        if (ObjPickUpNDrop.WasPressedThisFrame())
         {
             if (heldObj != null)
             {
@@ -45,7 +48,9 @@ public class PickUpObj : MonoBehaviour
             {
                 RayDetection();
             }
-
+        }
+        else if(interactAction.WasPressedThisFrame())
+        {
             DoorInteractionFunc();
         }
     }
@@ -66,7 +71,7 @@ public class PickUpObj : MonoBehaviour
         ray = new Ray(transform.position, transform.forward);
         if (Physics.Raycast(ray, out RaycastHit hit2, rayDistance, LayerMask.GetMask("Door")))
         {
-            UnityEngine.Debug.Log("Hit a door: " + hit2.collider.name);
+            // UnityEngine.Debug.Log("Hit a door: " + hit2.collider.name);
             DoorInteraction hitDoor = hit2.collider.GetComponentInParent<DoorInteraction>();
             if (hitDoor != null)
             {
@@ -74,6 +79,20 @@ public class PickUpObj : MonoBehaviour
             }
         }
     } 
+
+    // void LetterInteractionFunc()
+    // {
+    //     ray = new Ray(transform.position, transform.forward);
+    //     if (Physics.Raycast(ray, out RaycastHit hit3, rayDistance, LayerMask.GetMask("Letter")))
+    //     {
+    //         UnityEngine.Debug.Log("Hit a letter: " + hit3.collider.name);
+    //         LetterInteraction hitLetter = hit3.collider.GetComponentInParent<LetterInteraction>();
+    //         if (hitLetter != null)
+    //         {
+    //             hitLetter.DisplayLetter();
+    //         }
+    //     }
+    // }
 
     void PickUpObject(GameObject obj)
     {
@@ -90,6 +109,15 @@ public class PickUpObj : MonoBehaviour
             //heldObj.transform.localScale = new Vector3(heldObj.transform.localScale.x, heldObj.transform.localScale.y, heldObj.transform.localScale.z); //reset object scale to prevent weird scaling when picking up
             //heldObj.transform.localPosition = new Vector3(0f, 0f, 0f); //reset object position to holdPos position to prevent weird offsets when picking up
             // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), true); 
+            if (heldObj.name == "crowbar")
+            {
+                // UnityEngine.Debug.Log("Picked up a crowbar!");
+                isHoldingCrowbar = true;
+            }
+            // else
+            // {
+            //     isHoldingCrowbar = false;
+            // }
         }
     }
 
@@ -102,6 +130,10 @@ public class PickUpObj : MonoBehaviour
         heldObj.transform.localScale = originalLocalScale; // Restore original scale after unparenting
         heldObjRb.isKinematic = false;
         heldObjRb.AddForce(new Vector3(0f, 0f, -2f), ForceMode.Impulse); // Add an upward force to the object when picked up
+        if (heldObj.name == "crowbar")
+        {
+            isHoldingCrowbar = false;
+        }
         heldObj = null; //undefine game object
         heldObjRb = null; //undefine rigidbody
     }
