@@ -7,6 +7,6 @@ public class ObjectiveUI : MonoBehaviour
 
     public void UpdateObjective(string newGoal) 
     {
-        objectiveText.text = "Objective: " + newGoal;
+        objectiveText.text = newGoal;
     }
 }

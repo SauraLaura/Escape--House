@@ -1,7 +1,11 @@
+using System;
 using System.Diagnostics;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.ProBuilder.Shapes;
+using UnityEngine.UI;
 
 public class PickUpObj : MonoBehaviour
 {
@@ -14,9 +18,16 @@ public class PickUpObj : MonoBehaviour
     InputSystem_Actions inputActions;
     InputAction interactAction;
     InputAction ObjPickUpNDrop;
+
     Ray ray;
     Vector3 originalLocalScale; // Store original scale when picking up
+    
+    
     public bool isHoldingCrowbar = false;
+    public bool isHoldingKey = false;
+    
+    [SerializeField] Image crosshair;
+    [SerializeField] bool isInteractableInSight = false;
 
     void OnEnable()
     {
@@ -36,6 +47,8 @@ public class PickUpObj : MonoBehaviour
         if (ObjPickUpNDrop == null)
             return;
 
+        UpdateInteractableSight();
+
         if (ObjPickUpNDrop.WasPressedThisFrame())
         {
             if (heldObj != null)
@@ -49,11 +62,20 @@ public class PickUpObj : MonoBehaviour
                 RayDetection();
             }
         }
-        else if(interactAction.WasPressedThisFrame())
+        
+        if(interactAction.WasPressedThisFrame())
         {
             DoorInteractionFunc();
             ButtonInteractionFunc();
         }
+        CrossHairChange();
+    }
+
+    void UpdateInteractableSight()
+    {
+        ray = new Ray(transform.position, transform.forward);
+        int interactableMask = LayerMask.GetMask("Interactable", "Door", "Button");
+        isInteractableInSight = Physics.Raycast(ray, out _, rayDistance, interactableMask);
     }
 
     void RayDetection()
@@ -67,6 +89,12 @@ public class PickUpObj : MonoBehaviour
         }
     }
 
+    void CrossHairChange()
+    {
+        float targetAlpha = isInteractableInSight ? 1f : 0.1f;
+        crosshair.color = new Color(1f, 1f, 1f, targetAlpha);
+    }
+
     void DoorInteractionFunc()
     {
         ray = new Ray(transform.position, transform.forward);
@@ -78,7 +106,9 @@ public class PickUpObj : MonoBehaviour
             {
                 hitDoor.ToggleDoor();
             }
+            isInteractableInSight = true;
         }
+        isInteractableInSight = false;
     } 
 
     // void LetterInteractionFunc()
@@ -106,7 +136,9 @@ public class PickUpObj : MonoBehaviour
             {
                 hitButton.PressButton();
             }
+            isInteractableInSight = true;
         }
+        isInteractableInSight = false;
     }
 
     void PickUpObject(GameObject obj)
@@ -129,6 +161,11 @@ public class PickUpObj : MonoBehaviour
                 // UnityEngine.Debug.Log("Picked up a crowbar!");
                 isHoldingCrowbar = true;
             }
+            else if (heldObj.name == "key")
+            {
+                // UnityEngine.Debug.Log("Picked up a key!");
+                isHoldingKey = true;
+            }
             // else
             // {
             //     isHoldingCrowbar = false;
@@ -148,6 +185,11 @@ public class PickUpObj : MonoBehaviour
         if (heldObj.name == "crowbar")
         {
             isHoldingCrowbar = false;
+        }
+        else if (heldObj.name == "key")
+        {
+            // UnityEngine.Debug.Log("Picked up a key!");
+            isHoldingKey = false;
         }
         heldObj = null; //undefine game object
         heldObjRb = null; //undefine rigidbody

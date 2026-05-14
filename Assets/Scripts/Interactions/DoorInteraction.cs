@@ -10,9 +10,11 @@ public class DoorInteraction : MonoBehaviour
     [SerializeField] float rotSpeed = 3f;
     public bool isLockedByPlanks;
     public bool isLockedByPadlock;
+    public bool isLockedByKey;
     [SerializeField] GameObject Planks; // Reference to the planks GameObject
     [SerializeField] DialogueData lockedDoorDialogue; // Dialog shown when trying to open without a crowbar
     [SerializeField] DialogueData lockedPadlockDialogue; // Dialog shown when the padlock is locked
+    [SerializeField] DialogueData lockedKeyDoorDialogue; // Dialog shown when the door is locked by a key
 
     Quaternion targetRotation;
     Quaternion closedRotation;
@@ -66,17 +68,18 @@ public class DoorInteraction : MonoBehaviour
 
     void DoorLockCheck()
     {
+        PickUpObj playerPickup = FindAnyObjectByType<PickUpObj>();
+        bool hasCrowbar = playerPickup != null && playerPickup.isHoldingCrowbar;
+        bool hasKey = playerPickup != null && playerPickup.isHoldingKey;
+        
         if (isLockedByPlanks)
         {
-            PickUpObj playerPickup = FindAnyObjectByType<PickUpObj>();
-            bool hasCrowbar = playerPickup != null && playerPickup.isHoldingCrowbar;
-
             if (hasCrowbar)
             {
                 Destroy(Planks);
                 isLockedByPlanks = false;
-                UnityEngine.Debug.Log("Door is locked by planks. Remove them to open the door.");
                 doorOpened = false; // Prevent the door from opening immediately after removing planks
+                // UnityEngine.Debug.Log("Door is locked by planks. Remove them to open the door.");
             }
             else
             {
@@ -96,12 +99,28 @@ public class DoorInteraction : MonoBehaviour
             }
             doorOpened = false;
         }
+        else if (isLockedByKey)
+        {
+            if(hasKey)
+            {
+                isLockedByKey = false;
+                doorOpened = true; // Prevent the door from opening immediately after unlocking
+                // UnityEngine.Debug.Log("Door is locked by a key. Use the key to unlock
+            }
+            else
+            {
+                // UnityEngine.Debug.Log("Door is locked by a key. Find the key to unlock it.");
+                DialogueManager.instance.StartDialogue(lockedKeyDoorDialogue, null);
+                doorOpened = false;
+            }
+        }
     }
 
     public void UnlockDoor()
     {
         isLockedByPlanks = false;
         isLockedByPadlock = false;
+        isLockedByKey = false;
     }
 }
 

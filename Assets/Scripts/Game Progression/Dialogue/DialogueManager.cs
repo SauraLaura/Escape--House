@@ -93,7 +93,7 @@ public class DialogueManager : MonoBehaviour
         {
             if(activeTrigger != null)
             {
-                Debug.Log(activeTrigger.gameObject.name + " dialogue ended.");
+                // Debug.Log(activeTrigger.gameObject.name + " dialogue ended.");
                 activeTrigger.hasPlayed = true;
                 activeTrigger = null;
             }
