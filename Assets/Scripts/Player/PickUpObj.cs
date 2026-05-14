@@ -67,6 +67,7 @@ public class PickUpObj : MonoBehaviour
         {
             DoorInteractionFunc();
             ButtonInteractionFunc();
+            LeverInteractionFunc();
         }
         CrossHairChange();
     }
@@ -74,7 +75,7 @@ public class PickUpObj : MonoBehaviour
     void UpdateInteractableSight()
     {
         ray = new Ray(transform.position, transform.forward);
-        int interactableMask = LayerMask.GetMask("Interactable", "Door", "Button");
+        int interactableMask = LayerMask.GetMask("Interactable", "Door", "Button", "Lever");
         isInteractableInSight = Physics.Raycast(ray, out _, rayDistance, interactableMask);
     }
 
@@ -141,6 +142,22 @@ public class PickUpObj : MonoBehaviour
         isInteractableInSight = false;
     }
 
+    void LeverInteractionFunc()
+    {
+        ray = new Ray(transform.position, transform.forward);
+        if (Physics.Raycast(ray, out RaycastHit hit5, rayDistance, LayerMask.GetMask("Lever")))
+        {
+            // UnityEngine.Debug.Log("Hit a lever: " + hit5.collider.name);
+            LeverInteraction hitLever = hit5.collider.GetComponentInParent<LeverInteraction>();
+            if (hitLever != null)
+            {
+                hitLever.ToggleLever();
+            }
+            isInteractableInSight = true;
+        }
+        isInteractableInSight = false;
+    }
+
     void PickUpObject(GameObject obj)
     {
         if(obj.GetComponent<Rigidbody>() != null)
@@ -156,12 +173,12 @@ public class PickUpObj : MonoBehaviour
             //heldObj.transform.localScale = new Vector3(heldObj.transform.localScale.x, heldObj.transform.localScale.y, heldObj.transform.localScale.z); //reset object scale to prevent weird scaling when picking up
             //heldObj.transform.localPosition = new Vector3(0f, 0f, 0f); //reset object position to holdPos position to prevent weird offsets when picking up
             // Physics.IgnoreCollision(heldObj.GetComponent<Collider>(), Player.GetComponent<Collider>(), true); 
-            if (heldObj.name == "crowbar")
+            if (heldObj.tag == "Crowbar")
             {
                 // UnityEngine.Debug.Log("Picked up a crowbar!");
                 isHoldingCrowbar = true;
             }
-            else if (heldObj.name == "key")
+            else if (heldObj.tag == "Key")
             {
                 // UnityEngine.Debug.Log("Picked up a key!");
                 isHoldingKey = true;
@@ -182,11 +199,11 @@ public class PickUpObj : MonoBehaviour
         heldObj.transform.localScale = originalLocalScale; // Restore original scale after unparenting
         heldObjRb.isKinematic = false;
         heldObjRb.AddForce(new Vector3(0f, 0f, -2f), ForceMode.Impulse); // Add an upward force to the object when picked up
-        if (heldObj.name == "crowbar")
+        if (heldObj.tag == "Crowbar")
         {
             isHoldingCrowbar = false;
         }
-        else if (heldObj.name == "key")
+        else if (heldObj.tag == "Key")
         {
             // UnityEngine.Debug.Log("Picked up a key!");
             isHoldingKey = false;
