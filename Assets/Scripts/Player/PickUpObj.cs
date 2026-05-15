@@ -1,10 +1,6 @@
-using System;
-using System.Diagnostics;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
-using UnityEngine.ProBuilder.Shapes;
 using UnityEngine.UI;
 
 public class PickUpObj : MonoBehaviour
@@ -29,6 +25,34 @@ public class PickUpObj : MonoBehaviour
     [SerializeField] Image crosshair;
     [SerializeField] bool isInteractableInSight = false;
 
+    public UnityEvent doorOpenEvent;
+    public UnityEvent doorCloseEvent;
+    
+    public UnityEvent buttonPressEvent;
+    
+    public UnityEvent leverToggleEvent;
+    
+    public UnityEvent crowbarPickUpEvent;
+    // public UnityEvent crowbarDropEvent;
+    
+    public UnityEvent keyPickUpEvent;
+    // public UnityEvent keyDropEvent;
+
+    public UnityEvent onLockedDoor;
+
+    public static PickUpObj instance;
+    void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+    
     void OnEnable()
     {
         inputActions = new InputSystem_Actions();
@@ -136,6 +160,7 @@ public class PickUpObj : MonoBehaviour
             if (hitButton != null)
             {
                 hitButton.PressButton();
+                buttonPressEvent?.Invoke();
             }
             isInteractableInSight = true;
         }
@@ -152,6 +177,7 @@ public class PickUpObj : MonoBehaviour
             if (hitLever != null)
             {
                 hitLever.ToggleLever();
+                leverToggleEvent?.Invoke();
             }
             isInteractableInSight = true;
         }
@@ -177,11 +203,13 @@ public class PickUpObj : MonoBehaviour
             {
                 // UnityEngine.Debug.Log("Picked up a crowbar!");
                 isHoldingCrowbar = true;
+                crowbarPickUpEvent?.Invoke();
             }
             else if (heldObj.tag == "Key")
             {
                 // UnityEngine.Debug.Log("Picked up a key!");
                 isHoldingKey = true;
+                keyPickUpEvent?.Invoke();
             }
             // else
             // {
@@ -202,11 +230,13 @@ public class PickUpObj : MonoBehaviour
         if (heldObj.tag == "Crowbar")
         {
             isHoldingCrowbar = false;
+            // crowbarDropEvent?.Invoke();
         }
         else if (heldObj.tag == "Key")
         {
             // UnityEngine.Debug.Log("Picked up a key!");
             isHoldingKey = false;
+            // keyDropEvent?.Invoke();
         }
         heldObj = null; //undefine game object
         heldObjRb = null; //undefine rigidbody

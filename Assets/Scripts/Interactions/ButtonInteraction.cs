@@ -19,6 +19,7 @@ public class ButtonInteraction : MonoBehaviour
         {
             padlockTarget.AddDigit(padlockDigit);
             Debug.Log($"Padlock button {padlockDigit} pressed.");
+            PickUpObj.instance.buttonPressEvent?.Invoke();
             return;
         }
         Debug.Log("Button " + gameObject.name + " has been pressed!");

@@ -140,7 +140,7 @@ MonoBehaviour:
   doorOpened: 0
   rotAngle: -90
   ReverseRot: 0
-  rotSpeed: 3
+  rotSpeed: 8
   isLockedByPlanks: 0
   isLockedByPadlock: 0
   isLockedByKey: 0
@@ -375,7 +375,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.75, y: 5.25, z: 2.2783685}
-  m_LocalScale: {x: 1.54, y: 1.54, z: 1.54}
+  m_LocalScale: {x: 1.7, y: 1.63, z: 1.65}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3811315642911115548}

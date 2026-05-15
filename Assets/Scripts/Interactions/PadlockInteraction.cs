@@ -58,13 +58,13 @@ public class PadlockInteraction : MonoBehaviour
             doorToOpen.ToggleDoor();
         }
 
-        onUnlock?.Invoke();
+        Invoke(nameof(OnUnlock), .1f);
     }
 
     void WrongCode()
     {
         Debug.Log("Padlock wrong code.");
-        onWrongCode?.Invoke();
+        Invoke(nameof(OnWrongCode), .1f);
 
         if (resetOnWrongCode)
         {
@@ -91,5 +91,15 @@ public class PadlockInteraction : MonoBehaviour
         combination = newCombination;
         ResetEntry();
         unlocked = false;
+    }
+
+    void OnUnlock()
+    {
+        onUnlock?.Invoke();
+    }
+
+    void OnWrongCode()
+    {
+        onWrongCode?.Invoke();
     }
 }

@@ -13,6 +13,7 @@ public class FlickeringLight : MonoBehaviour
 
     void OnEnable()
     {
+        flickeringLight = GetComponent<Light>();
         InvokeRepeating("Flicker", 0f, flickerSpeed);
     }
 

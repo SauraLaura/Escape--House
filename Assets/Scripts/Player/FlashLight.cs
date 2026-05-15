@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class FlashLight : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class FlashLight : MonoBehaviour
 
     InputSystem_Actions inputActions;
     InputAction flashLightAction;
+
+    [SerializeField] UnityEvent lightSwitchEvent;
 
     void OnEnable()
     {
@@ -25,6 +28,7 @@ public class FlashLight : MonoBehaviour
         if (flashLightAction != null && flashLightAction.WasPressedThisFrame())
         {
             FlashLightObj.SetActive(!FlashLightObj.activeSelf); // Toggle the flashlight on and off
+            lightSwitchEvent?.Invoke();
         }
     }
 }

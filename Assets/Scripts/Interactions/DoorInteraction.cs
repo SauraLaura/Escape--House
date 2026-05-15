@@ -48,10 +48,12 @@ public class DoorInteraction : MonoBehaviour
         if (doorOpened)
         {
             targetRotation = closedRotation * Quaternion.Euler(0, ReverseRot ? -rotAngle : rotAngle, 0);
+            PickUpObj.instance.doorOpenEvent?.Invoke();
         }
         else
         {
             targetRotation = closedRotation;
+            PickUpObj.instance.doorCloseEvent?.Invoke();
         }
     }
 
@@ -83,6 +85,7 @@ public class DoorInteraction : MonoBehaviour
             }
             else
             {
+                PickUpObj.instance.onLockedDoor?.Invoke();
                 DialogueManager.instance.StartDialogue(lockedDoorDialogue, null);
                 doorOpened = false;
             }
@@ -91,6 +94,7 @@ public class DoorInteraction : MonoBehaviour
         {
             if (lockedPadlockDialogue != null)
             {
+                PickUpObj.instance.onLockedDoor?.Invoke();
                 DialogueManager.instance.StartDialogue(lockedPadlockDialogue, null);
             }
             else
@@ -109,6 +113,7 @@ public class DoorInteraction : MonoBehaviour
             }
             else
             {
+                PickUpObj.instance.onLockedDoor?.Invoke();
                 // UnityEngine.Debug.Log("Door is locked by a key. Find the key to unlock it.");
                 DialogueManager.instance.StartDialogue(lockedKeyDoorDialogue, null);
                 doorOpened = false;

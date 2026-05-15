@@ -84,7 +84,7 @@ MonoBehaviour:
   doorOpened: 0
   rotAngle: -90
   ReverseRot: 0
-  rotSpeed: 3
+  rotSpeed: 8
   isLockedByPlanks: 1
   isLockedByPadlock: 0
   isLockedByKey: 0
