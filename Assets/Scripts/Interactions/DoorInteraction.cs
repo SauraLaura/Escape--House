@@ -1,6 +1,6 @@
-using System;
-using Unity.VisualScripting;
+using System.Collections;
 using UnityEngine;
+using Unity.Cinemachine;
 
 public class DoorInteraction : MonoBehaviour
 {
@@ -15,6 +15,12 @@ public class DoorInteraction : MonoBehaviour
     [SerializeField] DialogueData lockedDoorDialogue; // Dialog shown when trying to open without a crowbar
     [SerializeField] DialogueData lockedPadlockDialogue; // Dialog shown when the padlock is locked
     [SerializeField] DialogueData lockedKeyDoorDialogue; // Dialog shown when the door is locked by a key
+
+    // Camera shake settings
+    [SerializeField] float cameraShakeAmplitude = 0.5f;
+    [SerializeField] float cameraShakeFrequency = 10f;
+    [SerializeField] float cameraShakeDuration = 0.2f;
+    [SerializeField] CinemachineBasicMultiChannelPerlin cameraShakeComponent;
 
     Quaternion targetRotation;
     Quaternion closedRotation;
@@ -86,6 +92,7 @@ public class DoorInteraction : MonoBehaviour
             else
             {
                 PickUpObj.instance.onLockedDoor?.Invoke();
+                ApplyCameraShake();
                 DialogueManager.instance.StartDialogue(lockedDoorDialogue, null);
                 doorOpened = false;
             }
@@ -95,6 +102,7 @@ public class DoorInteraction : MonoBehaviour
             if (lockedPadlockDialogue != null)
             {
                 PickUpObj.instance.onLockedDoor?.Invoke();
+                ApplyCameraShake();
                 DialogueManager.instance.StartDialogue(lockedPadlockDialogue, null);
             }
             else
@@ -114,6 +122,7 @@ public class DoorInteraction : MonoBehaviour
             else
             {
                 PickUpObj.instance.onLockedDoor?.Invoke();
+                ApplyCameraShake();
                 // UnityEngine.Debug.Log("Door is locked by a key. Find the key to unlock it.");
                 DialogueManager.instance.StartDialogue(lockedKeyDoorDialogue, null);
                 doorOpened = false;
@@ -126,6 +135,36 @@ public class DoorInteraction : MonoBehaviour
         isLockedByPlanks = false;
         isLockedByPadlock = false;
         isLockedByKey = false;
+    }
+
+    /// Applies a camera shake effect when a locked door is attempted to be opened.
+    private void ApplyCameraShake()
+    {
+        if (cameraShakeComponent != null)
+        {
+            StartCoroutine(ShakeCamera());
+        }
+    }
+
+    /// Coroutine to apply camera shake for a specified duration.
+    private IEnumerator ShakeCamera()
+    {
+        float elapsedTime = 0f;
+        
+        // Apply shake
+        cameraShakeComponent.AmplitudeGain = cameraShakeAmplitude;
+        cameraShakeComponent.FrequencyGain = cameraShakeFrequency;
+
+        // Wait for the duration
+        while (elapsedTime < cameraShakeDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // Reset shake
+        cameraShakeComponent.AmplitudeGain = 0f;
+        cameraShakeComponent.FrequencyGain = 0f;
     }
 }
 

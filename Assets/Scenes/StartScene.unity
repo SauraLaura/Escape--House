@@ -82816,6 +82816,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1941311617407959372, guid: b745ca78c62a2754cab104436c741989, type: 3}
+      propertyPath: m_Size.y
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1941311617407959372, guid: b745ca78c62a2754cab104436c741989, type: 3}
+      propertyPath: m_Center.y
+      value: 6.51
+      objectReference: {fileID: 0}
     - target: {fileID: 2139372840099230142, guid: b745ca78c62a2754cab104436c741989, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -119173,9 +119181,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8513235465903719306, guid: ecaea0a7fef24f34db39897d9de95f34, type: 3}
-      propertyPath: lockedDoorDialogue
+      propertyPath: cameraShakeComponent
       value: 
-      objectReference: {fileID: 11400000, guid: 55efc603559420546819f39e0c5b1bd8, type: 2}
+      objectReference: {fileID: 831302659}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
